@@ -9,7 +9,7 @@ import numpy as np
 # ============================================================
 
 # Lattice size and template definition
-N = 12                      # number of lattice sites (1D ring)
+N = 16                      # number of lattice sites (1D ring)
 L = 4                       # length of each replication window
 
 TEMPLATE = (1, 1, 0, 1)     # τ pattern: "replicator"
@@ -576,9 +576,14 @@ if __name__ == "__main__":
     t_max = 200.0        # run long enough to see many births/deaths
     sample_dt = 0.2
 
-    # Initial state: one template in block A, blanks in B and C, all env bits = 0
-    # (We only care about the replication windows for complexity.)
-    initial_state = TEMPLATE + BLANK + BLANK
+    # Initial state: one template in A, blanks in B and C, env bits all 0
+    N_ENV = N - 3 * L          # 16 - 12 = 4
+    ENV_BLANK = (0,) * N_ENV
+
+    initial_state = TEMPLATE + BLANK + BLANK + ENV_BLANK
+
+    # Sanity check
+    assert len(initial_state) == N
 
     result = simulate(
         initial_state=initial_state,
@@ -592,4 +597,3 @@ if __name__ == "__main__":
     )
 
     analyze_and_plot(result, sigma0)
-

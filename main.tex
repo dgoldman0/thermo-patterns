@@ -1,0 +1,611 @@
+\begin{filecontents*}{refs.bib}
+@article{England2013SelfReplication,
+  author  = {England, Jeremy L.},
+  title   = {Statistical physics of self-replication},
+  journal = {The Journal of Chemical Physics},
+  year    = {2013},
+  volume  = {139},
+  number  = {12},
+  pages   = {121923},
+  doi     = {10.1063/1.4818538}
+}
+
+@article{England2015DissipativeAdaptation,
+  author  = {England, Jeremy L.},
+  title   = {Dissipative adaptation in driven self-assembly},
+  journal = {Nature Nanotechnology},
+  year    = {2015},
+  volume  = {10},
+  number  = {11},
+  pages   = {919--923},
+  doi     = {10.1038/nnano.2015.250}
+}
+
+@article{BarYam2004MultiscaleComplexity,
+  author  = {Bar{-}Yam, Yaneer},
+  title   = {Multiscale complexity/entropy},
+  journal = {Advances in Complex Systems},
+  year    = {2004},
+  volume  = {7},
+  number  = {1},
+  pages   = {47--63},
+  doi     = {10.1142/S0219525904000068}
+}
+
+@article{BarYam2004MultiscaleVariety,
+  author  = {Bar{-}Yam, Yaneer},
+  title   = {Multiscale variety in complex systems},
+  journal = {Complexity},
+  year    = {2004},
+  volume  = {9},
+  number  = {4},
+  pages   = {37--45},
+  doi     = {10.1002/cplx.20014}
+}
+
+@article{Allen2017MultiscaleInformation,
+  author  = {Allen, Benjamin and Stacey, Blake C. and Bar{-}Yam, Yaneer},
+  title   = {Multiscale information theory and the marginal utility of information},
+  journal = {Entropy},
+  year    = {2017},
+  volume  = {19},
+  number  = {6},
+  pages   = {273},
+  doi     = {10.3390/e19060273}
+}
+
+@article{BarYam2018InherentInstability,
+  author        = {Taeer, Ori and Lynch, Owen and Bar{-}Yam, Yaneer},
+  title         = {The inherent instability of disordered systems},
+  journal       = {arXiv preprint},
+  year          = {2018},
+  eprint        = {1812.00450},
+  archivePrefix = {arXiv},
+  primaryClass  = {cond-mat.dis-nn}
+}
+
+@misc{Goldman2019ProgressionLife,
+  author       = {Goldman, Daniel S.},
+  title        = {The Progression of Life: Before, Now, and In the Future; Here and Elsewhere},
+  howpublished = {OSF Preprints},
+  year         = {2019},
+  doi          = {10.31219/osf.io/4uczr},
+  url          = {https://doi.org/10.31219/osf.io/4uczr}
+}
+
+@incollection{LehmonenAnnila2022NaturalClasses,
+  author    = {Lehmonen, Lauri and Annila, Arto},
+  title     = {Natural Classes and Natural Classification},
+  booktitle = {Efficiency in Complex Systems: Self-Organization Towards Increased Efficiency},
+  editor    = {Georgiev, Georgi Y. and Shokrollahi{-}Far, Mohammad},
+  series    = {Springer Proceedings in Complexity},
+  pages     = {11--26},
+  publisher = {Springer},
+  year      = {2022},
+  doi       = {10.1007/978-3-030-69288-9_2}
+}
+
+@article{VenegasAravena2024MultiscalePrinciple,
+  author  = {Venegas{-}Aravena, Patricio and Cordaro, Enrique G.},
+  title   = {The Multiscale Principle in Nature (Principium luxuri{\ae}): Linking Multiscale Thermodynamics to Living and Non-Living Complex Systems},
+  journal = {Fractal and Fractional},
+  year    = {2024},
+  volume  = {8},
+  number  = {1},
+  pages   = {35},
+  doi     = {10.3390/fractalfract8010035}
+}
+\end{filecontents*}
+
+\documentclass[11pt]{article}
+
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{authblk}
+\usepackage{graphicx}
+\usepackage{bm}
+\usepackage{hyperref}
+\usepackage[margin=1in]{geometry}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue,
+  citecolor=blue,
+  urlcolor=blue
+}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{definition}{Definition}
+\newtheorem{remark}{Remark}
+
+\newcommand{\Prob}{\mathbb{P}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\OmegaSet}{\Omega}
+\newcommand{\states}{\Omega}
+\newcommand{\oo}{\omega}
+\newcommand{\op}{\omega'}
+\newcommand{\eps}{\varepsilon}
+
+\title{Why Some Patterns Spread More Than Others: How Biased Changes and Energy Use Shape Structure in Driven Systems}
+
+\author{Daniel Goldman \\ ORCID: 0000-0003-2835-3521}
+
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Living and prebiotic systems exhibit two intertwined features.
+Some patterns, such as molecular templates or ecological strategies, generate copies of themselves faster than competitors.
+At the same time, the degrees of freedom that realize these patterns display correlations across scales, from local chemical neighborhoods to entire organisms or communities.
+Jeremy England's theory of the thermodynamics of self-replication quantifies the entropy production required for a pattern to grow in copy number in a driven system~\cite{England2013SelfReplication,England2015DissipativeAdaptation}.
+Yaneer Bar--Yam's multiscale complexity framework and its generalization by Allen, Stacey and Bar--Yam quantify how information about a pattern is distributed over scales within a system~\cite{BarYam2004MultiscaleComplexity,BarYam2004MultiscaleVariety,Allen2017MultiscaleInformation}.
+
+This paper develops a common Markov framework for these ideas and advances a central principle.
+In a driven Markov system, whenever a family of microscopic transitions is thermodynamically biased so that certain patterns tend to generate more copies of themselves than competing patterns, those same transitions build correlations among the degrees of freedom that realize the pattern.
+The entropy produced along them sets a single quantitative budget that constrains both how fast copies accumulate and how fast information about that pattern grows across scales.
+
+The argument unfolds in four stages.
+First, the paper reviews the core results of England's self-replication bound and Bar--Yam's multiscale complexity, and places them within a broader landscape that includes an initial conjecture in an attempted synthesis of thermodynamics and complexity~\cite{Goldman2019ProgressionLife} and later work on thermodynamic hierarchy and multiscale structure~\cite{LehmonenAnnila2022NaturalClasses,VenegasAravena2024MultiscalePrinciple}.
+Second, it formulates multiscale complexity for a Markov process and shows that its time derivative can be written as a flux--force sum over microscopic transitions, in close analogy with entropy production.
+Third, it introduces a family of replication-type transitions inside the Markov network and derives an inequality that links multiscale complexity growth at a given scale to the entropy produced along those transitions.
+Finally, it illustrates the framework with two finite-state Markov models on a shared ``bitstring world'': one built explicitly from replication-biased edges and one built from an environment-driven local potential.
+In both directions, the same microscopic transitions can be recognized as replication events and as steps that increase multiscale complexity at specific scales, and the entropy production along those transitions serves as a common budget for both effects.
+\end{abstract}
+
+\section{Introduction}
+
+Self-replication necessarily involves dissipation of free energy as heat into the environment (i.e., an increase in environmental entropy).
+A molecular assembly that copies itself in a thermal environment must absorb and release energy, and the microstates of the assembly and its surroundings evolve in a way that carries an arrow of time.
+England's statistical physics of self-replication makes this intuition precise~\cite{England2013SelfReplication}.
+By treating replication as a stochastic process on a thermal background, he obtained a lower bound on the entropy produced per replication event in terms of the replicator's durability and internal entropy change.
+Later work on dissipative adaptation recast this insight in a more general form: under sustained driving, a system may reorganize into configurations that absorb and dissipate work more effectively, so that such configurations become dynamically favored steady states~\cite{England2015DissipativeAdaptation}.
+
+A complementary line of research focuses on structure and information.
+Bar--Yam introduced multiscale complexity measures that quantify how correlations among system components are distributed across scales~\cite{BarYam2004MultiscaleComplexity,BarYam2004MultiscaleVariety}.
+The associated complexity profile $C(k)$ summarizes, for each scale $k$, how much ``irreducible'' information is shared among groups of at least $k$ parts.
+The later multiscale information theory of Allen, Stacey and Bar--Yam extends this approach and clarifies its foundations~\cite{Allen2017MultiscaleInformation}.
+These tools describe how a system is organized, but they do not, by themselves, specify the thermodynamic cost of assembling or maintaining that organization.
+
+The idea that these threads belong together appears in conceptual work by Goldman 2019, which argued that thermodynamics and complexity theory jointly constrain the progression of life across scales~\cite{Goldman2019ProgressionLife}.
+He highlighted England's self-replication bound and Bar--Yam's multiscale complexity as two pillars of a broader story about ``entropic pressure'' shaping structure from chemical to societal scales.
+Other authors have explored thermodynamic views of hierarchy and multiscale organization.
+Lehmonen and Annila discussed natural classes and classification as thermodynamic phenomena~\cite{LehmonenAnnila2022NaturalClasses}.
+Venegas-Aravena and Cordaro proposed a multiscale thermodynamic principle linking energy dissipation across scales to the emergence of complex structure in both living and nonliving systems~\cite{VenegasAravena2024MultiscalePrinciple}.
+
+The present work develops an explicit bridge at the level of driven Markov processes.
+The guiding question is simple.
+Inside a Markov network, imagine a family of transitions that, under driving, make a certain pattern reproduce more rapidly than competing patterns.
+Those transitions have a thermodynamic signature: their rate asymmetry encodes an entropy cost per step.
+At the same time, each such transition changes the configuration of the system and therefore its multiscale complexity.
+Can one track these two roles simultaneously and express both copy-number growth and complexity growth in terms of a single entropy budget associated with those transitions?
+
+The answer unfolded here is affirmative, at least in a tractable class of finite-state models.
+The key steps are:
+\begin{itemize}
+  \item expressing multiscale complexity as a linear functional of subset entropies associated with a Markov process;
+  \item writing its time derivative as a sum over transitions of probability flux times an ``informational force'';
+  \item isolating a family of replication-type transitions and defining their contribution to entropy production; and
+  \item proving that, under mild conditions, the rate at which those transitions increase multiscale complexity at a given scale is bounded below by a constant times their entropy production rate.
+\end{itemize}
+Toy models then demonstrate this principle in explicit form.
+
+\section{Two strands of background theory}
+
+\subsection{Thermodynamics of self-replication and dissipative adaptation}
+
+England's 2013 paper considers a system $S$ coupled to a thermal bath at inverse temperature $\beta$~\cite{England2013SelfReplication}.
+The joint dynamics are assumed to obey microreversibility, so that forward and reverse trajectories satisfy a Crooks-type fluctuation relation.
+Within this setting, two macrostates $I$ and $II$ are defined as ensembles of microstates with distributions $p(i|I)$ and $p(j|II)$.
+If $\pi(I\to II)$ denotes the probability that a system prepared in $I$ is found in $II$ after a time interval $\tau$, and $\pi(II\to I)$ is defined analogously for the reverse preparation, then the following inequality holds:
+\begin{equation}
+  \beta \langle Q \rangle_{I\to II}
+  + \ln \frac{\pi(II\to I)}{\pi(I\to II)}
+  + \Delta S_{\mathrm{int}}
+  \;\geq\; 0.
+  \label{eq:england-general}
+\end{equation}
+Here $\langle Q \rangle_{I\to II}$ is the average heat released to the bath on paths that carry the system from $I$ to $II$, and $\Delta S_{\mathrm{int}}$ is the change in Shannon entropy of the system between the two ensembles.
+
+To model self-replication, England introduces a birth--death process for the copy number $n$, with births at rate $g_n$ and deaths at rate $\delta_n$.
+Under simplifying assumptions, including constant $g$ and $\delta$ and replication events that transform one copy and reactants into two copies plus byproducts, inequality~\eqref{eq:england-general} yields a bound on the entropy production per replication event:
+\begin{equation}
+  \Delta S_{\mathrm{tot}} \equiv \beta \Delta q + \Delta s_{\mathrm{int}}
+  \;\geq\; \ln \frac{g}{\delta}.
+  \label{eq:england-bound}
+\end{equation}
+The quantity $\Delta q$ is the mean heat released into the bath when a copy is formed, and $\Delta s_{\mathrm{int}}$ is the internal entropy change carried by the replicator.
+The right-hand side involves the ratio of the growth rate $g$ to the decay rate $\delta$, which measures the durability of the replicated state.
+Equation~\eqref{eq:england-bound} expresses a tradeoff: greater net growth requires a larger entropy production per replication.
+
+In later work, England considered driven systems where no explicit notion of a discrete replicator is assumed~\cite{England2015DissipativeAdaptation}.
+When a system is subjected to an external drive that performs work in a time-dependent manner, different configurations of the system respond differently, absorbing and dissipating energy at different rates.
+Over time, configurations whose microscopic dynamics happen to align with the drive, and thereby dissipate more of its energy, can become statistically favored.
+This perspective introduces the idea of dissipative adaptation: under sustained driving, systems reorganize into states that are better suited, in a thermodynamic sense, to their environment.
+
+In both cases, a central role is played by the asymmetry between typical forward and reverse trajectories in the configuration space of $S$.
+This asymmetry is encoded in log-ratios of transition rates or path probabilities, and it determines the entropy production associated with particular dynamical channels.
+
+\subsection{Multiscale complexity and information profiles}
+
+Bar--Yam's multiscale complexity framework begins from a different angle~\cite{BarYam2004MultiscaleComplexity,BarYam2004MultiscaleVariety}.
+A system is represented as a collection of parts, indexed by a finite set $\mathcal{A}$, with each part $a$ associated with a random variable $X_a$.
+For any subset $B\subseteq \mathcal{A}$, the joint entropy
+\begin{equation}
+  H(B) = - \sum_{x_B} p(x_B) \log p(x_B)
+\end{equation}
+measures the uncertainty in the configuration of parts in $B$.
+From the collection of subset entropies $\{H(B)\}$, Bar--Yam constructs a complexity profile $C(k)$ that attributes information to scales.
+Roughly speaking, $C(k)$ counts how much ``irreducible'' information is shared among groups of at least $k$ parts and vanishes at scales above the largest nontrivial clusters in the system.
+
+Allen, Stacey and Bar--Yam recast this construction in a more general multiscale information theory~\cite{Allen2017MultiscaleInformation}.
+They consider dependency structures on $\mathcal{A}$ and define a scale-weighted information that aggregates contributions from dependencies of different sizes.
+The complexity profile $C_{\mathcal{A}}(k)$ and a marginal utility of information emerge as derived functions of this structure.
+A key structural point is that these multiscale quantities can be expressed as linear combinations of subset information measures, such as entropies and mutual informations.
+This linearity will be crucial when multiscale complexity is embedded in a Markovian dynamic.
+
+Bar--Yam's work emphasizes that the organization of a system depends on scale.
+A system can look highly structured at one scale while appearing uncorrelated at another.
+The complexity profile captures this scale dependence and encodes it in a single curve.
+
+\subsection{Thermodynamics, hierarchy and multiscale structure}
+
+The Goldman 2019 ``Progression of Life'' conjecture paper places these ideas within a broader conceptual narrative~\cite{Goldman2019ProgressionLife}.
+He argues that thermodynamic ``entropic pressure'' and multiscale complexity together shape the evolution of structure from prebiotic chemistry to present-day ecosystems and societies.
+England's self-replication bound and Bar--Yam's multiscale complexity appear as central ingredients in this story, which treats them as complementary views of a single physical constraint on organization.
+
+Lehmonen and Annila approach hierarchy and classification from a thermodynamic perspective~\cite{LehmonenAnnila2022NaturalClasses}.
+They describe natural classes as sets of states through which flows of energy and matter organize in characteristic ways.
+Their analysis connects hierarchical structure, efficiency and thermodynamic considerations.
+Venegas-Aravena and Cordaro introduce a multiscale thermodynamic principle that relates energy dissipation at different scales to the emergence and persistence of complex structure~\cite{VenegasAravena2024MultiscalePrinciple}.
+They formalize this idea in terms of a thermodynamic fractal dimension and explore implications for a variety of systems.
+
+Together, these works motivate a concrete, dynamical bridge between replication bias and multiscale structure.
+A convenient setting for such a bridge is a finite-state Markov process.
+
+\section{Multiscale complexity in a Markov process}
+
+\subsection{Markov dynamics and entropy production}
+
+Consider a continuous-time Markov process on a finite state space $\states$.
+At time $t$, the system occupies state $\oo\in\states$ with probability $P_t(\oo)$.
+Transitions from $\oo$ to $\op$ occur with rates $W_{\oo\op}$, so that the probability distribution evolves according to the master equation
+\begin{equation}
+  \frac{\dd P_t(\oo)}{\dd t}
+  = \sum_{\op} \left[ P_t(\op) W_{\op\oo} - P_t(\oo) W_{\oo\op} \right].
+  \label{eq:master}
+\end{equation}
+The instantaneous probability flux along the directed edge $\oo\to\op$ is
+\begin{equation}
+  J_{\oo\op}(t) = P_t(\oo) W_{\oo\op}.
+\end{equation}
+
+When the transition rates obey local detailed balance with respect to a thermal environment and possibly other reservoirs, the log-ratio
+\begin{equation}
+  \sigma_{\oo\op}
+  = \ln \frac{W_{\oo\op}}{W_{\op\oo}}
+\end{equation}
+encodes the generalized thermodynamic force associated with the transition $\oo\to\op$.
+The total entropy production rate of the process takes the familiar form
+\begin{equation}
+  \dot{S}_{\mathrm{tot}}(t)
+  = \frac{1}{2} \sum_{\oo,\op}
+    \left[ J_{\oo\op}(t) - J_{\op\oo}(t) \right]
+    \ln \frac{J_{\oo\op}(t)}{J_{\op\oo}(t)}.
+\end{equation}
+For the present purposes, it is useful simply to note that each directed edge carries a log-rate asymmetry $\sigma_{\oo\op}$, and that the product $J_{\oo\op}(t)\,\sigma_{\oo\op}$ contributes to entropy production along that edge.
+
+\subsection{Parts, subset entropies and complexity profiles}
+
+To bring multiscale structure into this picture, equip the Markov system with a set $\mathcal{A}$ of parts.
+Each part $a\in\mathcal{A}$ is associated with a coarse-grained variable $X_a$, which is a function of the microstate $\oo$.
+For example, $X_a$ might record whether a particular region contains a copy of a template, or whether a spin is up or down.
+For any subset $B\subseteq\mathcal{A}$, define the random vector $X_B = \{X_a : a\in B\}$ and its marginal distribution $P_t(x_B)$ induced by $P_t(\oo)$.
+The Shannon entropy of $X_B$ at time $t$ is
+\begin{equation}
+  H_t(B) = - \sum_{x_B} P_t(x_B) \log P_t(x_B).
+\end{equation}
+
+The multiscale information formalism of Allen, Stacey and Bar--Yam shows that for each fixed scale $k$ one can construct a complexity profile $C_{\mathcal{A}}(k;t)$ as a linear functional of the subset entropies~\cite{Allen2017MultiscaleInformation}.
+This means that there exist coefficients $a^{(k)}_B$, depending only on $k$ and the combinatorics of $\mathcal{A}$, such that
+\begin{equation}
+  C_{\mathcal{A}}(k;t)
+  = \sum_{B\subseteq\mathcal{A}} a^{(k)}_B \, H_t(B).
+  \label{eq:C-linear}
+\end{equation}
+The specific form of the coefficients is not needed here; only their existence and time-independence matter.
+
+This representation invites one to differentiate $C_{\mathcal{A}}(k;t)$ with respect to time and relate its change to the Markov dynamics.
+Proceeding term by term and making use of the master equation, one can rearrange the result into a sum over transitions.
+The computation is sketched in the appendix and yields a compact expression.
+
+\subsection{An informational potential and a flux--force formula}
+
+To streamline the result, introduce, for each scale $k$, an informational potential $K_k(\oo,t)$ defined on microstates by
+\begin{equation}
+  K_k(\oo,t)
+  = \sum_{B\subseteq\mathcal{A}} a^{(k)}_B \,
+    \log P_t\big(X_B = X_B(\oo)\big).
+  \label{eq:K-def}
+\end{equation}
+This potential assigns to each microstate a weighted sum of the log-probabilities of the coarse configurations present in that state, with weights given by how each subset contributes to complexity at scale $k$.
+
+With this definition, the time derivative of $C_{\mathcal{A}}(k;t)$ can be written as
+\begin{equation}
+  \frac{\dd}{\dd t} C_{\mathcal{A}}(k;t)
+  = \sum_{\oo,\op}
+    P_t(\oo) W_{\oo\op}
+    \big[ K_k(\op,t) - K_k(\oo,t) \big].
+  \label{eq:Cdot-flux}
+\end{equation}
+Each term in this sum has the structure of a flux $P_t(\oo)W_{\oo\op}$ times a force $K_k(\op,t)-K_k(\oo,t)$.
+The force is antisymmetric under exchange of $\oo$ and $\op$.
+Equation~\eqref{eq:Cdot-flux} mirrors the standard expression for entropy production, with the informational potential playing the role of an effective free energy.
+
+This representation places multiscale complexity change and entropy production on a common footing inside the Markov process.
+Both are expressed as sums over transitions of fluxes multiplied by forces associated with those transitions.
+
+\section{Replication-type transitions and their entropy budget}
+
+\subsection{Replication-type edges in the transition graph}
+
+Within the full set of transitions in the Markov process, focus attention on a family $R$ of directed edges $(\oo,\op)$ that implement replication-like events.
+These may correspond to birth events in a population model, template copying reactions in a chemical network, or other microscopic moves that increase the representation of a particular pattern in the system.
+
+Assign an orientation to each edge in $R$ so that the forward direction $\oo\to\op$ corresponds to the replication of the pattern.
+For such an edge, define the log-rate asymmetry
+\begin{equation}
+  \sigma_{\oo\op}
+  = \ln \frac{W_{\oo\op}}{W_{\op\oo}}.
+\end{equation}
+A positive value of $\sigma_{\oo\op}$ indicates that the replication direction is thermodynamically favored.
+
+The entropy production rate associated with the family $R$ is then
+\begin{equation}
+  \Sigma_R(t)
+  = \sum_{(\oo,\op)\in R}
+    P_t(\oo) W_{\oo\op} \, \sigma_{\oo\op}.
+  \label{eq:Sigma-R}
+\end{equation}
+This quantity measures the contribution to entropy production from replication-type transitions.
+
+In parallel, the contribution of $R$ to the rate of change of multiscale complexity at scale $k$ is
+\begin{equation}
+  \dot{C}^{(R)}_{\mathcal{A}}(k;t)
+  = \sum_{(\oo,\op)\in R}
+    P_t(\oo) W_{\oo\op}
+    \big[ K_k(\op,t) - K_k(\oo,t) \big].
+  \label{eq:Cdot-R}
+\end{equation}
+This is obtained by restricting the sum in equation~\eqref{eq:Cdot-flux} to the edges in $R$.
+
+\subsection{Complexity gain per unit thermodynamic bias}
+
+For each replication-type edge $(\oo,\op)\in R$, it is useful to consider the ratio
+\begin{equation}
+  r_{\oo\op}(k,t)
+  = \frac{K_k(\op,t) - K_k(\oo,t)}{\sigma_{\oo\op}}.
+\end{equation}
+When both the numerator and denominator are positive, this ratio is the complexity gain at scale $k$ per unit of log-rate asymmetry for that transition.
+
+Define
+\begin{equation}
+  r_{\min}(k,t)
+  = \min_{(\oo,\op)\in R}
+    r_{\oo\op}(k,t),
+\end{equation}
+where the minimum is taken over those edges in $R$ for which $\sigma_{\oo\op}>0$ and $K_k(\op,t) - K_k(\oo,t) \ge 0$.
+On such edges, replication both dissipates entropy and increases complexity at scale $k$.
+
+Substituting $K_k(\op,t) - K_k(\oo,t) = r_{\oo\op}(k,t)\,\sigma_{\oo\op}$ into equation~\eqref{eq:Cdot-R} and comparing with equation~\eqref{eq:Sigma-R} yields a simple inequality.
+
+\begin{theorem}
+\label{thm:bound}
+At a given time $t$ and scale $k$, suppose that for all edges $(\oo,\op)\in R$ the log-rate asymmetry $\sigma_{\oo\op}$ and the informational potential difference $K_k(\op,t) - K_k(\oo,t)$ are nonnegative.
+Then
+\begin{equation}
+  \dot{C}^{(R)}_{\mathcal{A}}(k;t)
+  \;\ge\;
+  r_{\min}(k,t) \, \Sigma_R(t).
+  \label{eq:Cdot-bound}
+\end{equation}
+\end{theorem}
+
+\noindent
+The proof is a direct comparison of the sums in equations~\eqref{eq:Sigma-R} and~\eqref{eq:Cdot-R} after expressing the latter in terms of $r_{\oo\op}(k,t)\,\sigma_{\oo\op}$.
+Each term in $\dot{C}^{(R)}_{\mathcal{A}}(k;t)$ is bounded below by $r_{\min}(k,t)$ times the corresponding contribution to $\Sigma_R(t)$, and summing over $R$ produces inequality~\eqref{eq:Cdot-bound}.
+
+The quantity $r_{\min}(k,t)$ plays the role of a conversion factor between replication entropy production and multiscale complexity growth at scale $k$.
+When replication-type transitions at time $t$ are relatively homogeneous in their complexity-building effect, $r_{\min}(k,t)$ is representative of the complexity yield per unit of entropy production.
+
+\subsection{From England's bound to multiscale information growth}
+
+England's bound~\eqref{eq:england-bound} constrains the net growth rate in copy number for a replicating pattern in terms of the entropy produced per replication event.
+The bound can be viewed as a statement about coarse-grained transitions between states of different copy number within a broader Markov process.
+In that language, replication events belong to a family $R$ of transitions with log-rate asymmetry determined by the thermodynamic parameters of the environment and the replicator.
+
+Theorem~\ref{thm:bound} adds a complementary statement at a different level of description.
+Under conditions where replication-type transitions both dissipate entropy and build correlations among those parts that realize the pattern, the total entropy production rate $\Sigma_R(t)$ associated with those transitions places a lower bound on the rate at which multiscale complexity increases at scales that track the pattern.
+
+Combining these perspectives yields a single narrative.
+In a driven Markov system, a family of transitions $R$ can be identified that makes a given pattern reproduce faster than its competitors.
+The log-rate asymmetry along these transitions encodes the entropy cost per replication.
+Early in the formation of the pattern, when each replication event also tends to increase organization at relevant scales, the same entropy budget supports both copy-number growth and multiscale information growth.
+Later, when the system nears a steady distribution of patterns, entropy production along $R$ continues as replication counters noise and drift, while the net complexity change becomes small.
+The toy models developed next give concrete examples of this story.
+
+\section{Toy models on a shared bitstring world}
+
+To see the framework in action, it is helpful to examine explicit Markov models where all relevant quantities can be computed.
+Both models described here live on the same simple ``world'': a 16-bit string partitioned into three 4-bit windows and a residual environment.
+
+\subsection{Architecture of the world}
+
+The microstate of the system consists of a binary string of length 16.
+Bits are grouped as follows.
+Bits 1--4 form window A, bits 5--8 window B, bits 9--12 window C, and bits 13--16 serve as an internal environment.
+Two special 4-bit patterns are singled out:
+\begin{equation}
+  \tau = (1,1,0,1), \qquad
+  \beta = (0,0,0,0).
+\end{equation}
+Each window can therefore be labeled at a coarse-grained level as TEMPLATE ($\tau$), BLANK ($\beta$), or OTHER (any remaining pattern).
+The part set for the multiscale analysis, $\mathcal{A}$, consists of the three windows considered as parts that take values in this three-element alphabet.
+In some analyses the individual bits within a window are also treated as parts to explore finer-scale complexity.
+
+The two models share this state space and part structure.
+They differ in how transitions are defined and in how replication-type moves are identified.
+
+\subsection{Model I: replication-biased windows}
+
+The first model begins from an England-style assumption.
+Replication events are specified explicitly as transitions inside windows, and their thermodynamic bias is fixed.
+
+Within each window, a BLANK pattern can convert to the TEMPLATE pattern and vice versa.
+The rate constants for these transitions are chosen so that
+\begin{equation}
+  \ln \frac{k_{\beta\to\tau}}{k_{\tau\to\beta}} = \sigma_0,
+\end{equation}
+for some positive constant $\sigma_0$, such as $\sigma_0 = \ln 3$.
+This means that, in the absence of other effects, TEMPLATE windows arise more often than they disappear, with a fixed log-rate asymmetry.
+All such transitions across windows are collected in the family $R$ of replication-type edges.
+
+Outside the windows, and within windows whose 4-bit patterns are classified as OTHER, bits flip at unbiased base rates.
+These flips represent environmental noise that does not contribute directly to replication and are treated as N-type transitions.
+
+Simulating an ensemble of such systems, one can track the number of TEMPLATE windows $N_\tau$ in each microstate and its distribution over time.
+One can also compute, at each time, the distribution over window label triplets $(L_A,L_B,L_C)$ and from it the block-scale complexity profile $C_{\mathrm{blocks}}(k;t)$ for $k=1,2,3$.
+The entropy production $\Sigma_R(t)$ along replication-type edges is obtained by summing $\sigma_0$ over $\beta\to\tau$ events and $-\sigma_0$ over the reverse, weighted by their occurrence frequencies.
+
+The dynamics display a clear formation phase and a maintenance phase.
+Suppose that initially window A contains a template while B and C are blank, and that all other bits start in a neutral configuration.
+At early times, template creation events in windows B and C spread TEMPLATE labels through the ensemble.
+The diversity of window label triplets increases, and the block-scale complexity $C_{\mathrm{blocks}}(1;t)$ rises in tandem.
+During this period, replication events that carry positive log-rate asymmetry also carry a positive contribution to the informational potential at the window scale, so the ratio $r_{\oo\op}(k,t)$ entering Theorem~\ref{thm:bound} is positive for many edges in $R$.
+The complexity growth at scale $k=1$ correlates with the replication entropy production $\Sigma_R(t)$.
+
+As time progresses, the ensemble approaches a stationary distribution over window labels.
+Windows fluctuate between TEMPLATE and BLANK, but the overall fraction of templates stabilizes.
+The complexity $C_{\mathrm{blocks}}(1;t)$ settles near a plateau, while $\Sigma_R(t)$ continues to grow approximately linearly as replication-type transitions continue to occur.
+Entropy production along $R$ now funds the maintenance of an established distribution of templates against noise, rather than the creation of new structure.
+Higher-scale block complexities $C_{\mathrm{blocks}}(2;t)$ and $C_{\mathrm{blocks}}(3;t)$ remain small throughout, as the dynamics do not directly couple different windows.
+
+This model therefore realizes a simple version of the central principle.
+The same family of replication-biased transitions $R$ both increases the copy number of TEMPLATE windows and builds block-scale complexity during the formation phase.
+The entropy production along these transitions limits how quickly both copy number and complexity can grow.
+
+\subsection{Model II: environment-driven local adaptation}
+
+The second model takes inspiration from Bar--Yam's work on systems responding to structured environments~\cite{BarYam2018InherentInstability}.
+Here the starting point is a time-dependent environment label that favors certain coarse-grained patterns in each window.
+Replication-type transitions are then inferred as those moves that align windows with the environment.
+
+Introduce an environment label $E_t = (E_t^{(A)},E_t^{(B)},E_t^{(C)})$, with each component taking values in $\{0,1,2\}$.
+The value $0$ indicates that the environment favors BLANK in the corresponding window, $1$ indicates that it favors TEMPLATE, and $2$ encodes neutrality or a mild preference for OTHER patterns.
+Over time, $E_t$ follows a prescribed sequence, for example cycling through patterns that favor exactly one TEMPLATE window, shifting which window is favored, and then favoring all three.
+
+For each microstate $\oo$ and environment label $E_t$, define a local potential
+\begin{equation}
+  f(\oo,E_t)
+  = \sum_{i\in\{\mathrm{A,B,C}\}} u\big(L_i(\oo), E_t^{(i)}\big),
+\end{equation}
+where $L_i(\oo)\in\{\tau,\beta,\text{other}\}$ is the label of window $i$ and $u$ is a simple scoring function.
+A convenient choice assigns a positive score $+\epsilon$ when a window's label matches the environment's preference and a negative score $-\epsilon$ for mismatches, with an appropriate treatment of the neutral case.
+
+Dynamics are implemented with a Metropolis rule.
+At each step, a proposal is made to alter the label of a single window by flipping its bits, and the change in potential $\Delta f = f(\oo',E_t)-f(\oo,E_t)$ is computed.
+If $\Delta f$ is positive, the move is accepted.
+If $\Delta f$ is negative, the move is accepted with probability $\exp(\alpha \Delta f)$, where $\alpha$ is a parameter controlling the strength of the bias.
+Bits outside the windows undergo separate noise dynamics.
+
+Window-label moves that increase $f$ in the direction of the environment's preference form the natural family $R$ of replication-type transitions.
+Their log-rate asymmetry can be associated with $\alpha\Delta f$ through the structure of the Metropolis rule.
+The entropy production along $R$ over a time interval $[0,T]$ can therefore be estimated as
+\begin{equation}
+  \Sigma_R(T) \approx \alpha \sum_{\text{accepted moves in }R} \Delta f,
+\end{equation}
+up to constants set by proposal probabilities.
+
+Complexity analysis proceeds as before.
+At each time, one can compute the distribution over window label triplets $(L_A,L_B,L_C)$ and derive the block-scale complexity profile.
+The environment sequence injects genuine 3-window patterns into the driving, since it sometimes favors exactly one template and sometimes all three.
+However, because the potential $f$ is a sum of single-window terms, the system's response remains primarily local.
+Windows track their own environment components effectively, and the single-window complexity $C_{\mathrm{blocks}}(1;t)$ acquires nontrivial structure.
+Joint correlations among windows remain weak, and the higher-scale complexities $C_{\mathrm{blocks}}(2;t)$ and $C_{\mathrm{blocks}}(3;t)$ stay close to the values expected for almost independent biased windows.
+
+When the environment label changes, the current distribution of window labels becomes misaligned with the new preferences.
+A burst of transitions in $R$ then drives the system toward alignment, generating spikes in $\Sigma_R(t)$ as windows adjust.
+After each adjustment, the distribution over labels and the complexity profile return to patterns similar to earlier in the cycle.
+Over many cycles, cumulative $\Sigma_R(T)$ grows significantly, while the net change in the complexity profile is modest.
+
+This model demonstrates a maintenance-dominated regime in a particularly clear fashion.
+Replication-type transitions, here interpreted as environment-alignment moves, generate a substantial entropy budget which is spent largely on repeatedly restoring alignment in response to changing conditions.
+Multiscale complexity grows only at those scales where the interaction reflects the environment, in this case the scale of individual windows.
+
+\subsection{Two perspectives on the same subset of transitions}
+
+The two models share the same microstate space and coarse-grained part decomposition.
+They differ in which ingredients are specified first.
+In the replication-biased model, the family $R$ of replication-type transitions and their log-rate asymmetry $\sigma_0$ are defined at the outset, and the resulting dynamics generate patterns and multiscale structure.
+In the environment-driven model, an external sequence of environment labels and a local potential are specified first, and the effective replication-type transitions emerge as those moves that align the system with the environment.
+
+In both cases, once the Markov process is in place, the same subset $R$ of transitions can be recognized as:
+\begin{itemize}
+  \item the set of moves that, under driving, tend to increase the representation of certain patterns relative to competitors; and
+  \item the set of moves that carry a positive informational potential difference $K_k(\op,t)-K_k(\oo,t)$ at specific scales, and therefore contribute positively to multiscale complexity growth there.
+\end{itemize}
+Entropy production along $R$, captured by $\Sigma_R(t)$, thus serves as a common budget that constrains both copy-number dynamics and the pace at which multiscale information about the favored patterns spreads through the system.
+
+\section{Discussion}
+
+The Markov framework developed here allows one to treat replication bias and multiscale structure within a single mathematical language.
+The crucial ingredients are the linear representation of multiscale complexity in terms of subset entropies, the informational potential $K_k(\oo,t)$ built from this representation, and the decomposition of entropy production into contributions from a family of replication-type transitions.
+
+In this language, replication-biased transitions occupy a particular role.
+Each such transition $\oo\to\op$ has a log-rate asymmetry $\sigma_{\oo\op}$ that arises from the interaction of the system with its environment.
+At the same time, it changes the informational potential at each scale by an amount $K_k(\op,t)-K_k(\oo,t)$.
+When a pattern is in a formation regime, replication-type transitions tend to increase both its copy number and the correlations among parts that support it.
+Theorem~\ref{thm:bound} shows that, at that stage, the total entropy production rate $\Sigma_R(t)$ along replication-type edges bounds from below the rate at which multiscale complexity grows at scales that track the pattern.
+
+The toy models bring several qualitative points into focus.
+They show how one can move from a purely thermodynamic view, where the focus rests on rates, durability and heat, to a multiscale information view, where the focus rests on correlations among parts, without changing the underlying dynamics.
+They highlight the difference between the formation of structure and its maintenance under noise and drive.
+In the formation phase, replication entropy production and complexity growth rise together.
+In the maintenance phase, entropy production continues, while complexity settles into a steady profile.
+They also underscore that complexity grows selectively at those scales where the dynamics couple parts.
+Replicating small units independently is insufficient to generate higher-scale organization unless replication moves link those units in a structured manner.
+
+This perspective sits naturally among the broader attempts to relate thermodynamics and hierarchy.
+Lehmonen and Annila's thermodynamic picture of classification, and Venegas-Aravena and Cordaro's multiscale thermodynamic principle, both emphasize that flows of energy and matter sculpt hierarchical organization~\cite{LehmonenAnnila2022NaturalClasses,VenegasAravena2024MultiscalePrinciple}.
+The Markov bridge developed here provides a concrete example of this sculpting at the microscopic level, where individual transitions simultaneously carry entropy and information.
+
+\section{Conclusion and outlook}
+
+The analysis presented here combines three elements.
+First, multiscale complexity measures are embedded in a Markovian description by expressing them as linear functionals of subset entropies and introducing an informational potential whose changes along transitions drive complexity growth.
+Second, a family of replication-type transitions is singled out and associated with an entropy production rate that reflects their thermodynamic bias.
+Third, an inequality connects the rate of multiscale complexity growth at a given scale to the entropy production along these transitions.
+
+The two toy models on a shared bitstring world serve as proofs of principle.
+In the replication-biased model, England-style replication edges are specified directly, and the multiscale analysis reveals how entropy production along these edges fuels both copy-number increase and the buildup of block-scale complexity during formation.
+In the environment-driven model, a Bar--Yam-style local potential in a structured environment defines favorable patterns, and the effective replication-type transitions inferred from it carry an entropy budget that largely supports maintenance of alignment, with only modest net complexity growth.
+
+The central principle can be restated in this light.
+In a driven Markov system, when a family of microscopic transitions is thermodynamically biased so that certain patterns generate more copies of themselves than competitors, those same transitions build correlations among the degrees of freedom that realize the pattern.
+Entropy production along those transitions sets a quantitative budget that constrains both how quickly copies accumulate and how quickly information about the pattern grows across scales.
+
+Future work can extend this bridge in several directions.
+One avenue is to move beyond finite-state models to continuous degrees of freedom and spatially extended systems.
+Another is to explore coarse-grained descriptions where replication-type transitions emerge at higher levels and to examine how the entropy budget transforms under coarse-graining.
+A third avenue is to apply the framework to specific biochemical networks, active matter models or adaptive materials, and to compare the predicted relationships among replication, entropy production and multiscale complexity with simulations or experiments.
+
+The toy models establish that this bridge between replication bias and multiscale complexity can be constructed and tested in simple settings.
+Developing it further offers a path toward a more unified understanding of how dissipation and information flow cooperate in the growth and maintenance of structure in driven systems.
+
+\bibliographystyle{plain}
+\bibliography{refs}
+
+\end{document}

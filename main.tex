@@ -604,6 +604,229 @@ A third avenue is to apply the framework to specific biochemical networks, activ
 
 The toy models establish that this bridge between replication bias and multiscale complexity can be constructed and tested in simple settings.
 Developing it further offers a path toward a more unified understanding of how dissipation and information flow cooperate in the growth and maintenance of structure in driven systems.
+\appendix
+\section*{Appendix A – Deriving the flux–force representation for multiscale complexity}
+
+\subsection*{A.1 Derivative of subset entropies}
+
+Recall that for a subset \(B\subseteq A\), the coarse-grained random variable \(X_B=\{X_a:a\in B\}\) has marginal distribution
+\[
+P_t(x_B)=\sum_{\omega\in\Omega:\,X_B(\omega)=x_B} P_t(\omega),
+\]
+and its Shannon entropy is
+\[
+H_t(B) = -\sum_{x_B} P_t(x_B)\,\log P_t(x_B).
+\tag{A.1}
+\]
+
+Differentiating in time gives
+\[
+\frac{d}{dt}H_t(B)
+= -\sum_{x_B} \dot P_t(x_B)\,\log P_t(x_B)
+ -\sum_{x_B} \dot P_t(x_B).
+\tag{A.2}
+\]
+The second sum vanishes because \(\sum_{x_B}P_t(x_B)=1\) for all \(t\), so \(\sum_{x_B}\dot P_t(x_B)=0\). Hence
+\[
+\frac{d}{dt}H_t(B)
+= -\sum_{x_B} \dot P_t(x_B)\,\log P_t(x_B).
+\tag{A.3}
+\]
+
+Express \(\dot P_t(x_B)\) in terms of the microscopic dynamics. Using the definition of \(P_t(x_B)\),
+\[
+\dot P_t(x_B)
+=\sum_{\omega:\,X_B(\omega)=x_B} \dot P_t(\omega).
+\tag{A.4}
+\]
+The master equation is
+\[
+\dot P_t(\omega)
+= \sum_{\omega'}\Big[ P_t(\omega')W_{\omega'\omega} - P_t(\omega)W_{\omega\omega'}\Big].
+\tag{A.5}
+\]
+Substituting (A.5) into (A.4) and then into (A.3) yields
+\[
+\frac{d}{dt}H_t(B)
+= -\sum_{x_B}\sum_{\omega:\,X_B(\omega)=x_B}
+\sum_{\omega'}\Big[ P_t(\omega')W_{\omega'\omega} - P_t(\omega)W_{\omega\omega'}\Big]
+\log P_t(x_B).
+\tag{A.6}
+\]
+
+Swap the order of summations and note that \(\log P_t(x_B)\) depends only on \(x_B\), not on the particular \(\omega\) with that coarse configuration:
+\[
+\frac{d}{dt}H_t(B)
+= -\sum_{\omega,\omega'}\Big[ P_t(\omega')W_{\omega'\omega} - P_t(\omega)W_{\omega\omega'}\Big]
+\log P_t\big(X_B(\omega)\big).
+\tag{A.7}
+\]
+
+Now relabel dummy indices in the first term, \(\omega\leftrightarrow\omega'\):
+\[
+\sum_{\omega,\omega'} P_t(\omega')W_{\omega'\omega}\log P_t\big(X_B(\omega)\big)
+= \sum_{\omega,\omega'} P_t(\omega)W_{\omega\omega'}\log P_t\big(X_B(\omega')\big).
+\tag{A.8}
+\]
+Substitute (A.8) into (A.7) to obtain
+\[
+\frac{d}{dt}H_t(B)
+= -\sum_{\omega,\omega'} P_t(\omega)W_{\omega\omega'}\log P_t\big(X_B(\omega')\big)
++ \sum_{\omega,\omega'} P_t(\omega)W_{\omega\omega'}\log P_t\big(X_B(\omega)\big).
+\tag{A.9}
+\]
+Thus
+\[
+\boxed{
+\frac{d}{dt}H_t(B)
+= \sum_{\omega,\omega'} P_t(\omega)W_{\omega\omega'}
+\Big[\log P_t\big(X_B(\omega)\big) - \log P_t\big(X_B(\omega')\big)\Big].
+}
+\tag{A.10}
+\]
+
+This is the basic flux–force identity for the entropy of a coarse-grained variable \(X_B\).
+
+\subsection*{A.2 From subset entropies to multiscale complexity}
+
+The multiscale complexity profile at scale \(k\) is written as a linear functional of the subset entropies:
+\[
+C_A(k;t) = \sum_{B\subseteq A} a_B^{(k)}\,H_t(B),
+\tag{A.11}
+\]
+with coefficients \(a_B^{(k)}\) that depend on the combinatorics of \(A\) and the chosen multiscale measure, but \emph{not} on time.
+
+Differentiating (A.11) and using (A.10) gives
+\[
+\frac{d}{dt}C_A(k;t)
+= \sum_{B\subseteq A} a_B^{(k)}\,\frac{d}{dt}H_t(B)
+= \sum_{B\subseteq A} a_B^{(k)}
+\sum_{\omega,\omega'} P_t(\omega)W_{\omega\omega'}
+\Big[\log P_t\big(X_B(\omega)\big) - \log P_t\big(X_B(\omega')\big)\Big].
+\tag{A.12}
+\]
+
+Swap sums and group terms by transitions:
+\[
+\frac{d}{dt}C_A(k;t)
+= \sum_{\omega,\omega'} P_t(\omega)W_{\omega\omega'}
+\sum_{B\subseteq A} a_B^{(k)}
+\Big[\log P_t\big(X_B(\omega)\big) - \log P_t\big(X_B(\omega')\big)\Big].
+\tag{A.13}
+\]
+
+Now introduce the informational potential. There are two equivalent conventions:
+
+\begin{itemize}
+\item If you define
+  \[
+  K_k(\omega,t)
+  := -\sum_{B\subseteq A} a_B^{(k)} \log P_t\big(X_B = X_B(\omega)\big),
+  \tag{A.14}
+  \]
+  then
+  \[
+  K_k(\omega,t) - K_k(\omega',t)
+  = \sum_{B\subseteq A} a_B^{(k)}
+    \Big[\log P_t\big(X_B(\omega)\big) - \log P_t\big(X_B(\omega')\big)\Big],
+  \tag{A.15}
+  \]
+  and (A.13) becomes
+  \[
+  \boxed{
+  \frac{d}{dt}C_A(k;t)
+  = \sum_{\omega,\omega'} P_t(\omega)W_{\omega\omega'}
+  \big[ K_k(\omega,t) - K_k(\omega',t)\big].
+  }
+  \tag{A.16}
+  \]
+
+\item If instead you keep the sign choice
+  \[
+  K_k^{(+)}(\omega,t)
+  := \sum_{B\subseteq A} a_B^{(k)} \log P_t\big(X_B = X_B(\omega)\big),
+  \tag{A.17}
+  \]
+  then \(K_k^{(+)} = -K_k\) and (A.16) can be written as
+  \[
+  \frac{d}{dt}C_A(k;t)
+  = \sum_{\omega,\omega'} P_t(\omega)W_{\omega\omega'}
+  \big[ K_k^{(+)}(\omega',t) - K_k^{(+)}(\omega,t)\big].
+  \tag{A.18}
+  \]
+\end{itemize}
+
+Equations (A.16) and (A.18) are the same identity written with two consistent sign conventions for the potential.
+
+Choosing the second convention (A.17) matches the definition in equation (10) and yields the flux–force relation
+\[
+\frac{d}{dt}C_A(k;t)
+=\sum_{\omega,\omega'} P_t(\omega)W_{\omega\omega'}
+\big[ K_k(\omega',t) - K_k(\omega,t)\big],
+\]
+as stated in equation (11).
+
+\subsection*{A.3 A fully antisymmetric form}
+
+Sometimes it is useful to make the antisymmetry in the “force” explicit. Starting from (A.18), add and subtract the same term with \(\omega\leftrightarrow\omega'\) and use
+\(P_t(\omega)W_{\omega\omega'} = J_{\omega\omega'}(t)\):
+
+\[
+\frac{d}{dt}C_A(k;t)
+= \frac{1}{2}\sum_{\omega,\omega'}
+\big[J_{\omega\omega'}(t) - J_{\omega'\omega}(t)\big]\,
+\big[ K_k(\omega',t) - K_k(\omega,t)\big].
+\tag{A.19}
+\]
+
+This mirrors the standard antisymmetric expression for entropy production,
+\[
+\dot S_{\mathrm{tot}}(t)
+= \frac{1}{2}\sum_{\omega,\omega'}
+\big[J_{\omega\omega'}(t) - J_{\omega'\omega}(t)\big]\,
+\ln\frac{J_{\omega\omega'}(t)}{J_{\omega'\omega}(t)}.
+\]
+
+\subsection*{A.4 Inequality (17) from the replication-edge restriction}
+
+For completeness, here is the one-line derivation of inequality (17) from equations (13)–(16).
+
+Restrict the sum (A.18) to replication-type edges \(R\):
+\[
+\dot C_A^{(R)}(k;t)
+= \sum_{(\omega,\omega')\in R} P_t(\omega)W_{\omega\omega'}
+\big[ K_k(\omega',t) - K_k(\omega,t)\big].
+\tag{A.20}
+\]
+
+For each edge in \(R\), define
+\[
+r_{\omega\omega'}(k,t)
+= \frac{K_k(\omega',t) - K_k(\omega,t)}{\sigma_{\omega\omega'}},
+\]
+whenever \(\sigma_{\omega\omega'}>0\), and let
+\[
+r_{\min}(k,t) = \min_{(\omega,\omega')\in R} r_{\omega\omega'}(k,t)
+\]
+over those edges with \(\sigma_{\omega\omega'}>0\) and \(K_k(\omega',t)-K_k(\omega,t)\ge 0\).
+
+Under the hypothesis that for all edges in \(R\) both \(\sigma_{\omega\omega'}\) and \(K_k(\omega',t)-K_k(\omega,t)\) are nonnegative, we have
+\[
+K_k(\omega',t) - K_k(\omega,t)
+= r_{\omega\omega'}(k,t)\,\sigma_{\omega\omega'}
+\ge r_{\min}(k,t)\,\sigma_{\omega\omega'}.
+\]
+Multiplying by \(P_t(\omega)W_{\omega\omega'}\) and summing over \(R\) gives
+\[
+\dot C_A^{(R)}(k;t)
+= \sum_{(\omega,\omega')\in R} P_t(\omega)W_{\omega\omega'}\,
+r_{\omega\omega'}(k,t)\,\sigma_{\omega\omega'}
+\ge r_{\min}(k,t) \sum_{(\omega,\omega')\in R} P_t(\omega)W_{\omega\omega'}\,\sigma_{\omega\omega'},
+\]
+which is precisely
+\[
+\dot C_A^{(R)}(k;t) \ge r_{\min}(k,t)\,\Sigma_R(t).
+\]
 
 \bibliographystyle{plain}
 \bibliography{refs}
